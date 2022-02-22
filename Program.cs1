@@ -1,0 +1,167 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+//Clases
+var cua = new Cuadrado(7);
+var cir = new Circulo(20);
+var rec = new Rectangulo(30, 6);
+
+Cuadrado cua2 = new Cuadrado(8);
+
+//Arrays FIJO
+Figura2D[] aFiguras0;
+Figura2D[] aFiguras1 = new Figura2D[3];
+Figura2D[] aFiguras2 = new Figura2D[3] { cua, cir, rec };
+
+var aFiguras3 = new Figura2D[3] { cua, cir, rec };
+
+
+//Lista EXTENSIBLE
+List<Figura2D> lFiguras0 = new();
+List<Figura2D> lFiguras1 = new() { cua };
+lFiguras1.Add(cir);
+lFiguras1.Add(rec);
+lFiguras1.Add(rec);
+lFiguras1.Remove(rec);
+lFiguras1.Remove(rec);
+lFiguras1.Remove(rec);
+var x1 = lFiguras1.ElementAt(0);
+var x2 = lFiguras1[0];
+//Tuplas
+var x = (5, 6);
+var fecha = (16, 7, 2020, "santi");
+var uno = x.Item1;
+var dos = x.Item2;
+(var tres, var cuatro) = x;
+var figs = (cir, cua);
+
+List<(int, int)> parejas = new();// {(1,1),(8,9)};
+for (var i = 1; i <= 10; i++)
+{
+    parejas.Add((i, i * i));
+}
+
+
+//1
+bool Es1Impar((int, int) t)
+{
+    bool result;
+    if (t.Item1 % 2 == 1)
+    {
+        result = true;
+    }
+    else
+    {
+        result = false;
+    }
+    return result;
+}
+Func<(int, int), bool> fe1i = ((int, int) t) => t.Item1 % 2 == 1;
+
+// for (var i = parejas.Count - 1; i >= 0; i--)
+// {
+//     if (fe1i(parejas[i])) parejas.RemoveAt(i);
+// }
+
+RemoveItems(parejas, fe1i);//t => t.Item1 % 2 == 1);
+// parejas.ForEach(p =>
+// {
+//     Error NO PODEMOS eliminar un elemento mientras estamos enumerando
+//     if (p.Item1 % 2 == 1) parejas.Remove(p);
+// });
+parejas.ForEach(p => Console.WriteLine($"({p.Item1},{p.Item2})"));
+
+Console.WriteLine(cir);
+Console.WriteLine(cua);
+Console.WriteLine(rec);
+Console.WriteLine(lFiguras1.Count);
+Console.WriteLine(x1 == x2);
+Console.WriteLine("Hello, World!");
+
+List<Figura2D> l2d = new()
+{
+    new Cuadrado(10),
+    new Circulo(15),
+    new Rectangulo(10, 15),
+    new Circulo(25),
+    new Cuadrado(21),
+    cua,
+    cua2,
+    cir,
+    rec
+    // ....
+};
+
+List<(Figura2D, Figura2D)> pa2D = new();
+
+for (var i = 0; i < l2d.Count - 1; i++)
+    for (var j = i + 1; j < l2d.Count; j++)
+    {
+        ;
+    }
+
+void RemoveItems(List<(int, int)> parejas, Func<(int, int), bool> criterio)
+{
+    for (var i = parejas.Count - 1; i >= 0; i--)
+    {
+        if (criterio(parejas[i])) parejas.RemoveAt(i);
+    }
+}
+
+enum Tamaño
+{
+    S, M, G, SG
+}
+
+abstract class Figura2D
+{
+    public virtual double Area { get; }
+    public Tamaño Size
+    {
+        get => Area switch
+        {
+            < 100 => Tamaño.S,
+            < 400 => Tamaño.M,
+            < 1000 => Tamaño.G,
+            _ => Tamaño.SG
+        };
+    }
+
+    public override string ToString()
+      => $"{this.GetType()} {this.Area} {this.Size}";
+}
+class Cuadrado : Figura2D
+{
+    double lado { get; set; }
+    public override double Area { get => lado * lado; }
+    public Cuadrado(double lado)
+    {
+        this.lado = lado;
+    }
+
+
+}
+class Circulo : Figura2D
+{
+    double radio { get; set; }
+    public override double Area { get => System.Math.PI * radio * radio; }
+    public Circulo(double radio)
+    {
+        this.radio = radio;
+    }
+
+}
+
+class Rectangulo : Figura2D
+{
+    double alto { get; set; }
+    double ancho { get; set; }
+    public override double Area { get => alto * ancho; }
+    public Rectangulo(double alto, double ancho)
+    {
+        this.alto = alto;
+        this.ancho = ancho;
+    }
+
+}
