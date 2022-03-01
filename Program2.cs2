@@ -20,6 +20,7 @@ var notas = new List<Calificacion>{
 notas.ForEach(WriteLine);
 GuardarCalificacionesCSV(notas);
 
+
 var notas3 = File.ReadAllLines(datafile)
         .Skip(1)
         .Where(row => row.Length > 0)
